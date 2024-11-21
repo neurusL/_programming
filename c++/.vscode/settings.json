@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "string": "cpp",
-        "vector": "cpp",
-        "complex": "cpp",
-        "valarray": "cpp",
-        "set": "cpp"
-    }
-}
