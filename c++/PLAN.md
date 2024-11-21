@@ -1,16 +1,16 @@
-### c++ from a programming language perspective λ
+# c++ from a programming language perspective λ
 
 
 
 ## basic types
-# built-in types
+### built-in types
 ```cpp
 float x = 4.2f
 double x = 4.2
 
 sizeof(type) returns bytes of type
 ```
-# algebraic types
+### algebraic types
 example of use:
 ```cpp
 // type aliasing
@@ -42,7 +42,7 @@ struct Tree {
 
 ```
 
-# automatic type inference
+## automatic type inference
 ```auto```  let compiler determine the type DEPEND ON THE CONTEXT.
 What happen if compiler does not gain enough information? (Turns into Python??)
 
@@ -85,7 +85,7 @@ catch (...) { c; }          // If a throws something else, jump here
 ## Pointer vs Reference 
 reference(`int&`) can only REFER to ALREADY EXISTING object, but pointer(`int*`) 
 can be created without depending on any existing object.
-# basics of pointers
+### basics of pointers
 ```cpp
 int var = 42;
 void* ptr = &var; // subtyping, int* <: void*
@@ -122,7 +122,7 @@ int main() {
     ...
 }
 ```
-# basics of reference
+### basics of reference
 ```cpp
 void dirty_incr1(int* a) { (*a)++; }
 void dirty_incr2(int& a) { a++; } // syntactic sugar for pointer
@@ -213,7 +213,7 @@ public:
 ```
 
 ## lambda expression
-#  intro
+###  intro
 ```cpp
 [capture](parameters) -> return_type {
     // function body
@@ -234,7 +234,7 @@ sort(weighted_graph.begin(), weighted_graph.end(),
     })
 ```
 
-# mutating environment
+### mutating environment
 ```cpp
 int main()
 {
@@ -246,7 +246,7 @@ int main()
 ```
 mutable keyword allows n, captured by reference, to be mutated in lambda expression body
 
-# recursive lambda 
+### recursive lambda 
 First, this doesn't work, since lambda function cannot directly refer itself in definition
 ```cpp
 auto gcd = [](int a, int b) -> int { 
@@ -311,10 +311,10 @@ another example from leetcode 105.
 ```
 
 
-### Advanced feature
+# Advanced feature
 
 ## preprocess
-# macros 
+### macros 
 Caveat! macros may affect things (in larger systems) you don't realize
 
 ```cpp
@@ -334,7 +334,7 @@ Caveat! macros may affect things (in larger systems) you don't realize
 #endif
 ```
 
-# ```#include```
+### ```#include```
 - ```#include``` literally copies the contents of a file into translation unit
     - this becomes problematic when in ```file1.cpp``` we ```#include "lib.hpp"``` and we ```#include "file1.cpp"``` and ```#include "lib.hpp"``` again in ```file2.cpp```
     - expedient solution: 
@@ -348,7 +348,7 @@ Caveat! macros may affect things (in larger systems) you don't realize
 ## linking
 
 
-# static, the confusing keyword
+### static, the confusing keyword
 Also see https://stackoverflow.com/questions/15235526/the-static-keyword-and-its-various-uses-in-c 
 ```static```  variables/functions exists for the lifetime translation unit that it is defined in, i.e. cannot be accessed from other namespaces (? in headers for const expr)
 ```cpp

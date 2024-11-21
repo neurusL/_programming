@@ -1,4 +1,4 @@
-### c++ data structure cheatsheet
+# c++ data structure cheatsheet
 
 ## string
 ```cpp
@@ -75,7 +75,7 @@ auto minelt = *(mymap.begin());
 ```
 
 ## set, unordered_set, multiset
-# set (tree based)
+### set (tree based)
 ```cpp
 set<int> s;     
 s.insert(20);
@@ -119,7 +119,7 @@ if (itlow != myset.end()) {
 myset.erase(itlow,itup);  
 
 ```
-# unordered_set (hash table based)
+### unordered_set (hash table based)
 ```cpp
 ```
 
@@ -198,7 +198,7 @@ while (!q.empty()) {
 }
 ```
 
-### Advanced data structure 
+# Advanced data structure 
 
 ## union find
 naive union find without path contraction:
@@ -233,4 +233,4 @@ int main() {
     }
 }
 ```
-## 
+ 

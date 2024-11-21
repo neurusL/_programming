@@ -1,1 +1,1 @@
-### c++ algorithm cheatsheet -- dynamic programming, more graph, geometry
+# c++ algorithm cheatsheet -- dynamic programming, more graph, geometry
