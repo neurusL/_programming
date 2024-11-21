@@ -53,8 +53,8 @@ if (it != v.end()) {
 }
 auto it = std::upper_bound(v.begin(), v.end(), 30);
 if (it != v.end()) {
-        std::cout << "Upper bound of 30 is: " << *it << "\n";   // Output: 40
-    }
+    std::cout << "Upper bound of 30 is: " << *it << "\n";       // Output: 40
+}
 ```
 
 ## DFS
