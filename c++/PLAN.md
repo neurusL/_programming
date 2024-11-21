@@ -189,6 +189,7 @@ int main() {
     c->DynamicDispatch(); // calls MySubClass::DynamicDispatch();
     delete c;
 }
+```
 Comment:
 - Idea of dynamic dispatch: at runtime determine the right version of method to call upon different classes. (theory behind this, class based or method based dynamic dispatch see PFPL chapter 26)
 - Dynamic dispatch vs Static dispatch: by default (or use ```final```), C++ does static
