@@ -1,7 +1,7 @@
 ### c++ data structure cheatsheet
 
 ## string
-```
+```cpp
 string s1;
 string s2 ("Hellow");
 string s3(10, 'x');
@@ -18,11 +18,11 @@ string s = s1.substr(pos);
 ```
 
 ## tuple(pair)
-```
+```cpp
 ```
 
 ## vector
-```
+```cpp
 vector<int> a;
 vector<int> a = {2, 3, 4};
 vector<int> a(10);
@@ -40,7 +40,7 @@ int a4 = a[4];
 ```
 
 ## map, unordered_map
-```
+```cpp
 std::map<int, std::string> mymap;
 
 // Adding elements to the map
@@ -76,7 +76,7 @@ auto minelt = *(mymap.begin());
 
 ## set, unordered_set, multiset
 # set (tree based)
-```
+```cpp
 set<int> s;     
 s.insert(20);
 s.insert(30);
@@ -120,16 +120,16 @@ myset.erase(itlow,itup);
 
 ```
 # unordered_set (hash table based)
-```
+```cpp
 ```
 
 ## linked list
 Sometimes dummy head/tail node are helpful.
-```
+```cpp
 ```
 
 ## priority queue
-```
+```cpp
 priority_queue<int> maxHeap;
 priority_queue<int, vector<int>, greater<int>> minHeap;
 
@@ -164,7 +164,7 @@ pq.push({3, 20});
 ```
 
 ## stack
-```
+```cpp
 stack<int> s;
 s.push(1);
 s.push(2);
@@ -183,7 +183,7 @@ Here's a more interesting example using a stack when doing DFS on a graph repres
 ```
 
 ## queue
-```
+```cpp
 queue<int> q;
 q.push(1);  // push BACK to the queue
 q.push(2);
@@ -202,7 +202,7 @@ while (!q.empty()) {
 
 ## union find
 naive union find without path contraction:
-```
+```cpp
 int find(vector<int>& p, int x) {
     if (find[x] != x) {
         p[x] = find(p[x]);
@@ -233,7 +233,4 @@ int main() {
     }
 }
 ```
-
-## segment tree 
-
 ## 

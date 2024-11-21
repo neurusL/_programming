@@ -6,7 +6,7 @@
 ## Binary Search
 As one of the common scenes in algorithms, in Binary Search we exclude search space
 (at least half of search space) each search:
-```
+```cpp
 int binsearch(vector<int>& nums, int left, int right, int target) {
     int l = left;
     int r = right;
@@ -25,7 +25,7 @@ int binsearch(vector<int>& nums, int left, int right, int target) {
 ```
 
 ## Sort
-```
+```cpp
 vector<int> vec = {3, 1, 4, 1, 5, 9, 2, 6};
 // Sort in ascending order
 sort(vec.begin(), vec.end());
@@ -44,7 +44,7 @@ sort(vec_idx.begin(), vec_idx.end(), [&vec](int i, int j){ return vec[i] < vec[j
 ```
 
 # application: lower_bound / upper_bound in C++
-```
+```cpp
 // input lower/upper_bound collection must be sorted
 std::vector<int> v = {10, 20, 30, 40, 50};
 auto it = std::lower_bound(v.begin(), v.end(), 30);
@@ -59,7 +59,7 @@ if (it != v.end()) {
 
 ## DFS
 implementation by recursion:
-```
+```cpp
 void dfs(int node, vector<vector<int>>& graph, vector<bool>& visited) {
     // Mark the current node as visited
     visited[node] = true;
@@ -81,7 +81,7 @@ void dfsall(graph){
 }
 ```
 implementation by iteration, where stack store the next nodes to visit:
-```
+```cpp
 void dfs(int node, vector<vector<int>>& graph) {
     vector<bool> visited(n, false);
     stack<int> stack;
@@ -107,7 +107,7 @@ void dfsall(graph) { }
 
 ## BFS 
 BFS has similar implementation as stack based DFS, they are esstentially same except for the data structure which maintains next nodes to visit:
-```
+```cpp
 void bfs(int node, vector<vector<int>>& graph) {
     vector<bool> visited(n, false);
     queue<int> queue;
@@ -137,7 +137,7 @@ for (u, v), denote its visit and finish time for u to be u_s, u_t,
 
 # Cycle Detection 
 Observe that cycle exists iff there is backward edge after DFS.
-```
+```cpp
 bool hasCycle(vector<vector<int>>& graph, int c, vector<bool>& visited, vector<bool>& finished) {;
     if (visited[c]) {
         if (!finished[c]) {
@@ -165,7 +165,7 @@ Observe that for any u reach v, v finishes before u in any DFS:
 a proof sketch is casing on the order we visit u, v: if first visit u, then before finishing u, we must visit and finish v; else, since in DAG v cannot reach u, then v finishes before we start visiting u.
 Then toposort simply outputs nodes in reversed finishing time.
 
-'''
+```cpp
 void dfs(int v, vector<vector<int>>& graph, vector<bool>& visited, stack<int>& topoStack) {
     visited[v] = true;
     // Visit node v
@@ -177,7 +177,7 @@ void dfs(int v, vector<vector<int>>& graph, vector<bool>& visited, stack<int>& t
 }
 void dfsall ...
 // all essentially same as DFS but maintaining a topoStack!
-'''
+```
 
 # Strongly Connected Components and Tarjan's Index
 
@@ -188,7 +188,7 @@ Actually BFS and DFS are special cases of priority first search, as well as the 
 min_{y in frontier} p(y), where p(y) = min_{x in X}(p(s, x) + w(x, y)).
 The rationale behind is, fix already searched set X, it's frontier Y, a shortest path from s in X to y in Y must pass through frontier, and for the y with minimum p(y), we know we already obtain the shortest path: AFSOC not shortest path, i.e. another path passing through different point y' in Y, then length(s, y') > length(s, y), contradicting with shortest path given all edges are positive.
 # Dijkstra's Algorithm
-'''
+```cpp
 typedef pair<int, int> pii; // (node, weight)
 void dijkstra(vector<vector<pii>>& graph, int start) {
     int n = graph.size();
@@ -216,7 +216,7 @@ void dijkstra(vector<vector<pii>>& graph, int start) {
         }
     }
 }
-'''
+```
 
 # A*
 
@@ -233,7 +233,7 @@ void dijkstra(vector<vector<pii>>& graph, int start) {
 # Kruskal's Algorithm
 Idea: sort edges' weights, based on which we add (u, v) to MST if either u or v not in MST yet.
 We need wise data structure to maintain current MST
-```
+```cpp
 
 int kruskal(vector<int, pair<int, int> >& edges) {
 
