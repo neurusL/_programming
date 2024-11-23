@@ -233,4 +233,58 @@ int main() {
     }
 }
 ```
+
+## string
+### basic operations
+```
+string deep_slice = s.substr(startIdx, length);
+// deep copy the substring to deep_slice
+
+std::string_view shallow_slice(s.c_str() + startIdx, length);
+// creates a shallow_slice referencing to original string
+```
+
+### prefix tree (trie)
+```
+class Trie {
+private:
+    vector<Trie*> children;
+    bool isEnd;
+
+    Trie* searchPrefix(string s) {
+        Trie* node = this;
+        for (char c : s) {
+            int idx = c - 'a';
+            if (!node->children[idx]) return nullptr;
+            node = node->children[idx];
+        }
+        return node;
+    }
+
+public:
+    Trie()
+        : children(26)
+        , isEnd(false) {}
+
+    void insert(string word) {
+        Trie* node = this;
+        for (char c : word) {
+            int idx = c - 'a';
+            if (!node->children[idx]) node->children[idx] = new Trie();
+            node = node->children[idx];
+        }
+        node->isEnd = true;
+    }
+
+    bool search(string word) {
+        Trie* node = searchPrefix(word);
+        return node != nullptr && node->isEnd;
+    }
+
+    bool startsWith(string prefix) {
+        Trie* node = searchPrefix(prefix);
+        return node != nullptr;
+    }
+};
+```
  

@@ -171,7 +171,7 @@ void dfs(int v, vector<vector<int>>& graph, vector<bool>& visited, stack<int>& t
     visited[v] = true;
     // Visit node v
     for (auto n : graph[v]) {
-        if (!visited[n]) { dfs(neighbor, adj, visited, topoStack); }
+        if (!visited[n]) { dfs(n, adj, visited, topoStack); }
     }
     // Finish node v
     topoStack.push(v);

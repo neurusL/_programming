@@ -278,7 +278,7 @@ Here's an example writing DFS as recursive lambda:
 ```cpp
 void dfs(int root, vector<vector <int>>& edges) {
     vector<bool> visited(n, false);
-    function<(int)> l_dfs = [&](int u) {
+    function<void(int)> l_dfs = [&](int u) {
         if (visited[u]) return;
         else {
             for (auto v : edges[u]) {
