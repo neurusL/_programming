@@ -9,11 +9,11 @@ As one of the common scenes in algorithms, in Binary Search we exclude search sp
 int binsearch(vector<int>& nums, int left, int right, int target) {
     int l = left;
     int r = right;
-    while (l < r) {
+    while (l <= r) {
         int mid = (r - l) + l / 2;  // avoid overflow
         if (nums[mid] == target) {
             return mid;
-        } else if (nums[mid] <= target) {
+        } else if (nums[mid] < target) {
             l = mid + 1;
         } else {
             r = mid - 1;

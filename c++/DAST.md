@@ -263,8 +263,8 @@ private:
 
 public:
     Trie()
-        : children(26)
-        , isEnd(false) {}
+        : children(26)    // initialize children = vector<int>(26,nullptr)
+        , isEnd(false) {} // initialize isEnd = false
 
     void insert(string word) {
         Trie* node = this;
@@ -287,4 +287,8 @@ public:
     }
 };
 ```
+several remarks (on oop):
+-  ```Trie* t = new Trie()``` vs ```Trie t = Trie()```: first allocate memory on heap (and requires you manually ```delete```) while second allocate on stack
+- ```this``` is a pointer to current object
+- 
  
