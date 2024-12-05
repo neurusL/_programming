@@ -158,6 +158,23 @@ public:
 
 ```
 
+## Templates (Generics / Polymorphism / Parametric Types ??)
+quick intro example, when you don't want to write same function for different types
+```cpp
+template<typename T>
+void Print(T value) {
+    std::cout << value << std::endl;
+}
+int main() {
+    Print<int>(5);
+    Print<std::string>("Example from Cherno's c++ tutorial video");
+}
+```
+```template``` won't exist until we call it, i.e. they will be factored out as dead code by complier if nobody used the template. It behaves more
+simply as linking.
+
+TODO: More to fill here!!!
+
 ## lambda expression
 ###  intro
 ```cpp

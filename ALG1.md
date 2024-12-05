@@ -58,6 +58,47 @@ if (it != v.end()) {
 }
 ```
 
+### quickselect, quicksort
+
+```cpp
+    int partition(vector<int>& nums, int p, int l, int r) {
+        // in place partition nums s.t. all lefts > nums[p]
+        int pivot = nums[p];
+        std::swap(nums[p], nums[r]);
+        int idx = l;
+        for (int i = l; i < r; i++) {
+            if (nums[i] > pivot) {
+                swap(nums[i], nums[idx]); // in place swap
+                idx++;
+            }
+        }
+        swap(nums[idx], nums[r]);
+        return idx;
+    }
+    
+    int quickSelect(vector<int>& nums, int left, int right, int k) {
+        // the base case here is redundant, without it quickSelect is still proven
+        // to be terminated with proper left, right
+        if (left == right) return nums[left]; 
+
+        // we rely on better randomness, this may not be a good one
+        int p = rand() % (right - left + 1) + left;
+        // assert(p >= left && p <= right);
+        int pivotIndex = partition(nums, p, left, right);
+
+        if (k == pivotIndex) return nums[k];
+        else if (k < pivotIndex) return quickSelect(nums, left, pivotIndex - 1, k);
+        else return quickSelect(nums, pivotIndex + 1, right, k);
+    }
+
+    int kthElement(vector<int>& nums, int k) {
+        return quickSelect(nums, 0, nums.size()-1, k-1);
+    }
+
+```
+
+### ```std::sort```
+
 ## DFS
 implementation by recursion:
 ```cpp

@@ -1,22 +1,5 @@
 # c++ data structure cheatsheet
 
-## string
-```cpp
-string s1;
-string s2 ("Hellow");
-string s3(10, 'x');
-string s3(10, 42); // ascii for x
-
-
-s1.push_back('a');
-s1 += 'b';
-s1 += "cdef";
-
-s1.substr(start_pos, len);
-size_t pos = s1.find("def");
-string s = s1.substr(pos);
-```
-
 ## tuple(pair)
 ```cpp
 ```
@@ -126,6 +109,7 @@ myset.erase(itlow,itup);
 ## linked list
 Sometimes dummy head/tail node are helpful.
 ```cpp
+
 ```
 
 ## priority queue
@@ -198,45 +182,27 @@ while (!q.empty()) {
 }
 ```
 
-# Advanced data structure 
-
-## union find
-naive union find without path contraction:
-```cpp
-int find(vector<int>& p, int x) {
-    if (find[x] != x) {
-        p[x] = find(p[x]);
-    }
-    return p[x];
-}
-
-void union(vector<int>& p, int x, int y) {
-    int p1 = find(p, x);
-    int p2 = find(p, y);
-    if (p1 != p2) {
-        p[p1] = p2;
-    }
-}
-
-int main() {
-    int n;
-    vector<int> p(n);
-    for (int i = 0; i < n; i++) {
-        p[i] = i; // union set initialized as n nodes
-    }
-    int m;
-    vector<pair<int, int> > relations(m);
-    for (int i = 0; i < m; i++) {
-        int x = relations[i].first;
-        int y = relations[i].second;
-        union(p, x, y);
-    }
-}
-```
+## dequeue
 
 ## string
 ### basic operations
+```cpp
+string s1;
+string s2 ("Hello");
+string s3(10, 'x');
+string s3(10, 42); // ascii for x
+
+
+s1.push_back('a');
+s1 += 'b';
+s1 += "cdef";
+
+s1.substr(start_pos, len);
+size_t pos = s1.find("def");
+string s = s1.substr(pos);
 ```
+
+```cpp
 string deep_slice = s.substr(startIdx, length);
 // deep copy the substring to deep_slice
 
@@ -245,7 +211,7 @@ std::string_view shallow_slice(s.c_str() + startIdx, length);
 ```
 
 ### prefix tree (trie)
-```
+```cpp
 class Trie {
 private:
     vector<Trie*> children;
@@ -292,3 +258,41 @@ several remarks (on oop):
 - ```this``` is a pointer to current object
 - 
  
+
+ # Advanced data structure 
+
+## union find
+naive union find without path contraction:
+```cpp
+int find(vector<int>& p, int x) {
+    if (find[x] != x) {
+        p[x] = find(p[x]);
+    }
+    return p[x];
+}
+
+void union(vector<int>& p, int x, int y) {
+    int p1 = find(p, x);
+    int p2 = find(p, y);
+    if (p1 != p2) {
+        p[p1] = p2;
+    }
+}
+
+int main() {
+    int n;
+    vector<int> p(n);
+    for (int i = 0; i < n; i++) {
+        p[i] = i; // union set initialized as n nodes
+    }
+    int m;
+    vector<pair<int, int> > relations(m);
+    for (int i = 0; i < m; i++) {
+        int x = relations[i].first;
+        int y = relations[i].second;
+        union(p, x, y);
+    }
+}
+```
+
+## dequeue + obtain max element in O(1)

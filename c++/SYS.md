@@ -75,7 +75,10 @@ int main() {
 }
 ```
 
-## Pointers interact with Scope
+## Function Pointers
+
+
+## Smart Pointers, Pointers interact with Scope
 ### Unique Pointer
 When stack allocated object goes out of scope, C++ automatically deallocate it 
 (recursive if the object contains pointers pointing to heap); but when heap 
@@ -103,3 +106,48 @@ int main() {
     }
 }
 ```
+Above is partial implementation for ```unique_ptr``` (copy trait for unique pointer is not shown, but they 
+are implemented as ```delete```). 
+Notice unique pointer has **unique ownership**, meaning no two owners can at the 
+same time own the pointer, otherwise, when one owner goes out of scope and the object
+consequently got deallocated, the other owner immediately lose the object's access.
+```cpp
+#include <memory>
+int main() {
+    {
+        std::unique_ptr<Entity> e1(new Entity()); 
+        // or use the convention:
+        std::unique_ptr<Entity> e2 = std::make_unique<Entity>();
+        std::unique_ptr<Entity> e2 = e3 // compiler error, 
+        e2->some_methods(some_args);
+    }
+}
+```
+
+### Shared Pointer (implemented through reference counting), and Weak Pointer
+Shared Pointer: deallocate the object when all the references to the object are gone (i.e. reference
+count = 0).
+```cpp
+#include <memory>
+int main() {
+    {
+        std::shared_ptr<Entity> e0;
+        {
+            std::shared_ptr<Entity> shared_e = std::make_shared<Entity>();
+            std::unique_ptr<Entity> e0 = shared_e; // cnt = 1
+            std::unique_ptr<Entity> e1 = shared_e; // cnt = 2
+        } // cnt = 1
+    } // cnt = 0, thus destroy object
+}
+```
+
+Weak Pointer: not influence the reference counting, rather it ask a shared pointer
+whether it is still valid
+
+## move
+### left values and right values 
+```
+type lvalue = rvalue
+```
+
+
