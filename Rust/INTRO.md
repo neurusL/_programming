@@ -5,7 +5,7 @@ Resources:
 - rust exercises: https://github.com/rust-lang/rustlings
 
 ## Basics
-### types
+### basic types
 Scalar Types 
  integer:
  - signed: i8, i16, i32, i64, i128, isize
@@ -138,7 +138,7 @@ fn print_nums(mode: i32) {
 }
 ``` 
 
-### move semantics
+### ```move``` semantics
 Essentially, in any scope, only one ownership for one object.
 Notice for stack object, they are implicitly copied, while for heap object ...
 ```rust
@@ -162,25 +162,61 @@ let mut s1 = String::from("hello");
 let mut s2 = s1;
 s2.push_str("world");
 ```
-...it won't be possible to ```println!("{s1} and {s2}");``` as ```s1``` already been ```move``` to ```s2```. To get around this without ```clone```ing s1, let's motivate the concept of reference:
+...it won't be possible to ```println!("{s1} and {s2}");``` as ```s1``` already been ```move``` to ```s2```. To get around this without ```clone```ing ```s1```, let's motivate the concept of reference:
 
 ```rust
-let x_heap = Box::new(5_i32);
-let x1 = &x_heap;
-let x2 = x1;
-println!("{x1} and {x2}");
-```
-```rust
-let mut s1 = String::from("hello");
-let s2 = s1;
-s2.push_str("world");
-```
-```rust
-let s1 = String::from("hello");
-let mut s2 = s1;
-s2.push_str("world");
+let v = vec!(1); // immutable
+let x1 = &v;
+let x2 = &v; 
+println!("{:?} and {:?}",x1, x2);
 ```
 
+```rust
+let v = vec!(1); // immutable
+let x1 = &v;
+let x2 = x1; 
+println!("{:?} and {:?}",x1, x2);
+```
+Now we want to mutate ```v```, by adding ```mut```:
+```rust
+let mut v = vec!(1);
+let x1 = &v;
+let x2 = &v; 
+println!("{:?} and {:?}",x1, x2);
+// -- ok
+
+let mut v = vec!(1);
+let x1 = &v;
+let x2 = x1; // ok since &Vec<i32> implements copy trait
+println!("{:?} and {:?}",x1, x2);
+
+let mut v = vec!(1);
+let x1 = &mut v;
+let x2 = x1; // not ok since &mut Vec<i32> implements copy trait
+println!("{:?} and {:?}",x1, x2);
+
+let mut v = vec!(1);
+let x1 = &mut v;
+let x2 = &v; 
+println!("{:?} and {:?}",x1, x2);
+// -- not ok, unique &mut in arbitrary scope
+
+let mut v = vec!(1);
+let x1 = &mut v;
+x1.push(2);
+println!("{:?}",x1); // -- ok, printing [1, 2], and x1 is consumed 
+let x2 = &mut v;
+x2.push(3);
+println!("{:?}",x2); // -- ok, printing [1, 2, 3], and x2 is consumed 
+
+```
+It's worth mentioning that, ```move``` is implemented at program level as a checker maintaining each object is uniquely owned in a scope, whereas *reference* is implemented at type level that 
+```rust
+let mut s1: String = String::from("hello");
+let s2: String = String::from("hello");
+let x1: &mut Vec<i32> = &mut v;
+let x2: &Vec<i32> = &v;
+```
 
 ```fn ident(mut ident)``` 
 ```rust 
