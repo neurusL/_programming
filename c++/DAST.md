@@ -20,6 +20,7 @@ a.pop_back();
 
 a[4] = 2;
 int a4 = a[4];
+int a4 = a.back();
 ```
 
 ## map, unordered_map
@@ -259,14 +260,13 @@ several remarks (on oop):
 - 
  
 
- # Advanced data structure 
+# Advanced data structure 
 
 ## union find
-naive union find without path contraction:
 ```cpp
 int find(vector<int>& p, int x) {
     if (find[x] != x) {
-        p[x] = find(p[x]);
+        p[x] = find(p[x]); // path contraction
     }
     return p[x];
 }

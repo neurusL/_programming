@@ -34,6 +34,41 @@ Scalar Types
     let B: [i32; 5] = [1, 2, 3, 4, 5]; // array with type and length
     let C = [3; 5]; // initialize array with 5 elements of 3
 ```
+Structs and Enums
+```rust
+struct structName {
+    field1: type1,
+    ...
+}
+impl structName {
+    fn new(value1: type1, ...) -> Self {
+        Self {...}
+    }
+    fn method1(&self, ...) { ... }
+}
+
+fn main() {
+    let instance = structName{field1: value, ... };
+    let _ = instance.field1;
+}
+```
+```rust 
+enum enumName {
+    Option1,
+    Option2{ field1: type1, ...},
+    Option3(type1, ...),
+    ...
+}
+fn main() {
+    ...
+    match enumValue {
+        enumName::Option1 => { <stmts> },
+        enumName::Option2{field1, ...} => { ... },
+        enumName::Option3(value1, ...) => { ... }
+    }
+}
+```
+
 ### declaration 
 Rust requires developer explicitly declare mutable variables with keyword ```mut```
 ```rust
@@ -131,14 +166,15 @@ fn print_nums(mode: i32) {
         let result = loop {
             counter += 1;
             if counter == 10 {
-                break (counter * 2) // break with return value
+                break (counter * 2) // break with 
+                return value
             }
         };
     }
 }
 ``` 
 
-### ```move``` semantics
+### basics of ```move``` semantics
 Essentially, in any scope, only one ownership for one object.
 Notice for stack object, they are implicitly copied, while for heap object ...
 ```rust
@@ -214,13 +250,37 @@ It's worth mentioning that, ```move``` is implemented at program level as a chec
 ```rust
 let mut s1: String = String::from("hello");
 let s2: String = String::from("hello");
+let mut v = vec!([1]);
 let x1: &mut Vec<i32> = &mut v;
 let x2: &Vec<i32> = &v;
 ```
 
-```fn ident(mut ident)``` 
-```rust 
-let vec0 = vec![1];
-let vec1 = fill_vect(vec0);
-fn fill_vec(mut vec: Vec<i32>) -> Vec<i32> { v.push(2); vec }
+some exercise:
+```rust
+// Shouldn't take ownership
+fn get_char(data: &String) -> char {
+    data.chars().last().unwrap()
+}
+
+fn print_first(data: &String) {
+    println!("{:?}", data.chars().nth(0).unwrap());
+}
+
+fn string_uppercase1(data: String) {
+    let data = data.to_uppercase();
+    println!("{data}");
+}
+
+fn string_uppercase2(data: &mut String) {
+    *data = data.to_uppercase();
+    println!("{data}");
+}
+
+fn main() {
+    let data = "Rust is great!".to_string();
+    get_char(&data);
+    print_first(&data);
+    string_uppercase1(data);
+    // string_uppercase2(&mut data);
+}
 ```

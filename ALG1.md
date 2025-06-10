@@ -1,6 +1,13 @@
 # c++ basic algorithm cheatsheet -- sort, graph
 
 ## Two Pointer and Sliding Window
+Two types of sliding window;
+```
+left = 0; right = 0;
+```
+```
+left = 0; right = vector.size();
+```
 
 ## Binary Search
 As one of the common scenes in algorithms, in Binary Search we exclude search space
@@ -103,12 +110,16 @@ if (it != v.end()) {
 implementation by recursion:
 ```cpp
 void dfs(int node, vector<vector<int>>& graph, vector<bool>& visited) {
+    if(visited[node]) {
+        // do stuff here
+        return; 
+    }
+
     // Mark the current node as visited
     visited[node] = true;
-
     // Visit all adjacent nodes
     for (int neighbor : graph[node]) {
-        if (!visited[neighbor]) {
+        if (!visited[neighbor]) { // and other guards here
             dfs(neighbor, graph, visited);
         }
     }
@@ -171,14 +182,14 @@ void bfs(int node, vector<vector<int>>& graph) {
 ## DFS based algorithms 
 
 DFS can be generalized to different algorithms, and idea behind is the DFS tree:
-After DFS, a graph can be partitioned into three different types of edeges:
+After DFS, based on the DFS traversal tree, a graph can be partitioned into three different types of edeges:
 for (u, v), denote its visit and finish time for u to be u_s, u_t,
-- (u, v) forward edge (in DFS tree) iff u_s < v_s < v_t < u_t
-- (u, v) backward edge (DFS tree node pointing back to ancestor) iff v_s < u_s < u_t < v_t
+- (u, v) forward edge (in DFS traversal tree) iff u_s < v_s < v_t < u_t
+- (u, v) backward edge (DFS tree node pointing back to ancestor) iff v_s < u_s < u_t < v_t, where v is visited before u but v finished after u
 - (u, v) cross edge iff no intersection between [u_s, u_t] and [v_s, v_t]
 
 ### Cycle Detection 
-Observe that cycle exists iff there is backward edge after DFS.
+Observe that cycle exists iff there is backward edge after DFS. Alternatively, if there's an edge (u, v) where v is visited before u, but v hasn't finish it DFS call, then a cycle detected.
 ```cpp
 bool hasCycle(vector<vector<int>>& graph, int c, vector<bool>& visited, vector<bool>& finished) {;
     if (visited[c]) {
@@ -199,9 +210,9 @@ bool hasCycle(vector<vector<int>>& graph, int c, vector<bool>& visited, vector<b
         return false;
     }
 }
-// a note for undirected graph: check neighbor not to be parent, otherwise in
-// adjacency list representation of undirected graph, there's always a cycle
 ```
+The same algorithm will output false positive of cycles in undirected graph, which represented by bidirected graph. Since each edge is a implicit cycle now, we need to first record the DFS traversal tree, say in some HashMap, to avoid detecting (u, v) and (v, u) as a cycle.
+
 ### Topological Sort on DAG
 Observe that for any u reach v, v finishes before u in any DFS:
 a proof sketch is casing on the order we visit u, v: if first visit u, then before finishing u, we must visit and finish v; else, since in DAG v cannot reach u, then v finishes before we start visiting u.
