@@ -178,6 +178,44 @@ void bfs(int node, vector<vector<int>>& graph) {
     }
 }
 ```
+stack based DFS and queue based BFS are in general worklist algorithms, where worklist maintain a frontier of nodes we are exploring of the graph. Whatever in the worklist should be tag as visited. 
+Exercise: think about why the following code fail, do we visit node only once?
+```cpp
+void bfs(int node, vector<vector<int>>& graph) {
+    vector<bool> visited(n, false);
+    queue<int> queue;
+
+    queue.push(node);
+    while(!queue.empty()) {
+        int curr = queue.pop();
+        visited[curr] = true; // <---- why not?
+
+        for (auto n : graph[curr]) {
+            if (!visited[n]) {
+                queue.push(n);
+            }
+        }
+    }
+}
+
+void dfs(int node, vector<vector<int>>& graph) {
+    vector<bool> visited(n, false);
+    stack<int> stack;
+
+    stack.push(node);
+    while(!stack.empty()) {
+        int curr = stack.top();
+        stack.pop();
+        visited[curr] = true; // <---- why not?
+
+        for (auto n : graph[curr]) {
+            if (!visited[n]) {
+                stack.push(n);
+            }
+        }
+    }
+}
+```
 
 ## DFS based algorithms 
 
