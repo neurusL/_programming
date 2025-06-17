@@ -1,6 +1,40 @@
 # c++ basic algorithm cheatsheet -- sort, graph
 
 ## Two Pointer and Sliding Window
+### two pointer
+### scenario of use: remove elements satisfying property $$P$$ from array in place:
+```python
+def p(x: int) -> bool: # this can be generalized to any p
+    return x == 0
+    
+def moveZeroes(self, nums: List[int]) -> None:
+        """ remove 0 to the end of array
+        method 1: (when we want to keep relative order)
+            keep a pointer of next to write, and another iterator pointer
+            when iterator pointer encounter a satisfying element, write 
+            to the writer pointer
+        method 2: (when there's no need to keep relative order, 
+                   and target element is less frequent)
+            keep a pointer starting from end pointint to a non-target
+            another iterator pointer 
+        """
+        right = len(nums)-1  # to record right most idx where P is not true
+        left = 0             # to record left most idx where P is true
+        
+        # both points to nowhere when initialized
+
+        while left <= right:
+            if p(nums[right]):
+                right -= 1
+            else:
+                if p(nums[left]):
+                    swap(nums[left], nums[right])
+                left += 1
+
+        return left
+        # todo!("I hope there's a more generalizable and formal template for this")
+
+```
 Two types of sliding window;
 ```
 left = 0; right = 0;
