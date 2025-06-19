@@ -106,9 +106,58 @@ Going back to the examples:
         while is_invariant(window): 
             # customized operation, e.g. update answer
             # ...
+            # it can be trick to wisely update information here (*)
 
             # then shrink the window to break the invariant
             window.remove(iterable[left])
             left += 1
             # in next (serveral) iterations invariant will be resumed
+```
+exercise: L76, L3297
+here's an example how to break the final answer into partitions with bijection to each valid sliding window:
+```python
+    def validSubstringCount(self, word1: str, word2: str) -> int:
+        # first step if find all matching of word2 in word1 up to permutation
+        # the step is same as L76
+        # second step is accumulate the counts based on each sliding window
+
+         
+        target_char_cnt = 0
+        target = [0] * 26 # hardcode the window info here, since a fixed alphabet
+        for s in word2:
+            w = ord(s) - ord('a')
+            target[w] += 1
+
+        for i in range(26):
+            if target[i] > 0:
+                target_char_cnt += 1
+
+        char_cnt = 0   # +1 if c in word2 and window[c] >= target[c]
+        window = [0] * 26
+
+        left = 0
+        right = 0
+
+        res = 0 # total number count of desired substring
+
+        while right < len(word1):
+            w = ord(word1[right]) - ord('a')
+            if target[w] > 0:
+                window[w] += 1
+                if window[w] == target[w]:
+                    char_cnt += 1
+
+            right += 1
+
+            while char_cnt == target_char_cnt:
+                print(left, right)
+                res += len(word1) - right + 1   # this step is crucial (*)
+                w2 = ord(word1[left]) - ord('a')
+                if target[w2] > 0:
+                    window[w2] -= 1
+                    if window[w2] < target[w2]:
+                        char_cnt -= 1
+                left += 1
+
+        return res
 ```
