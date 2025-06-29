@@ -39,7 +39,7 @@ def moveZeroes(self, nums: List[int]) -> None:
         # todo!("I hope there's a more generalizable and formal template for this")
 
 ```
-### scenario 2: when search space can be reduced to a sequence $$\{(i_t, j_t)\}$$, where $$ (i_t, j_t) < (i_{t+1}, j_{t+1}) $$
+### scenario 2: when search space can be pruned to a sequence of range keep strictly decreasing
 ```python
     def twoSumSmaller(self, nums: List[int], start: int, target: int) -> int:
         # assert the list is sorted
@@ -189,7 +189,7 @@ Here're some templates of binary search on 1d array:
 
         return -1
 ```
-2. search for $$e$$'s lower bound (first element $$>= e$$) and upper bound (first element $$>e$$)
+2. search for $$e$$'s lower bound (first element $$\geq e$$) and upper bound (first element $$>e$$)
 You may notice in the implementation of binary search above, ```lo``` stands for highest point that $$e = target$$ might be true, and ```hi``` for lowest point we know $$e > target$$. A small adjustment lead to implementation of ```lower_bound``` and ```upper_bound```
 ```python
     def lower_bound_include(self, nums: List[int], target: int) -> int:
@@ -225,16 +225,17 @@ You may notice in the implementation of binary search above, ```lo``` stands for
 ```
 3. a unified template (thanks to @IvanLenn, and according to this post https://codeforces.com/blog/entry/9901)
 - Usually the space of binary search is canonical (i.e. integers)
-- We can find a property (function) $P$ and some integer $N$ such that $\forall n >= N$ this $$P(n)$$ is true and $\forall n < N$ this $$P(n)$$ is false. Based on the property, we ignore at least half of search space each time, which is crucial to binary search.
+- We can find a property (function) $P$ and some integer $N$ such that $\forall n \geq N$ this $$P(n)$$ is true and $\forall n < N$ this $$P(n)$$ is false. Based on the property, we ignore at least half of search space each time, which is crucial to binary search.
 
-Therefore, in implementation we maintain two invariants:
+Therefore, in implementation we maintain two **invariants**:
 - $l$​ is the **highest point** we know $$P$$ is true. (if such $l$​ doesn't exist define it to be left boundary - 1)
 - $r$ is the **lowest point** we know $$P$$ is false. (if such $r$ doesn't exist define it to be right boundary + 1)
+With these invariants, it's trivial to prove the correctness of the template without hairy details on off by one. (coming up with these invariants isn't a trival thing!)
 
 Then just copy this template and customize this property function:
 ```cpp
-int l = lb - 1, r = rb + 1;
-while (l + 1 < r) {
+int l = left_bound - 1, r = right_bound + 1; // (l,r) is an open interval
+while (l + 1 < r) { 
   int mid = l + (r - l) / 2;
   function<bool(int)> ok = [&](int mid) -> bool {
     // Implement me
@@ -242,4 +243,50 @@ while (l + 1 < r) {
   if (ok(mid)) l = mid;
   else r = mid;
 }
+```
+example of uses (unified and clean!):
+```python
+    def lower_bd(nums: List[int], target: int) -> int:
+        lo = -1 # highest point < target
+        hi = len(nums) # lowest point >= target
+
+        while lo + 1 < hi:
+            mid = (hi-lo)//2 + lo
+            if nums[mid] < target:
+                lo = mid
+            else:
+                hi = mid
+        
+        return hi
+    
+    def upper_bd(nums: List[int], target: int) -> int:
+        lo = -1 # highest point <= target
+        hi = len(nums) # lowest point > target
+
+        while lo + 1 < hi:
+            mid = (hi-lo)//2 + lo
+            if nums[mid] <= target:
+                lo = mid
+            else:
+                hi = mid
+        
+        return lo
+    
+    def upper_bd_exclude(nums: List[int], target: int) -> int:
+        lo = -1 # highest point <= target
+        hi = len(nums) # lowest point > target
+
+        while lo + 1 < hi:
+            mid = (hi-lo)//2 + lo
+            if nums[mid] <= target:
+                lo = mid
+            else:
+                hi = mid
+        
+        return hi
+
+    lower = lower_bd(nums, target)
+    upper = upper_bd(nums, target)
+    upper_exclude = upper_bd_exclude(nums, target)
+    assert(0 <= upper_exclude - upper <= 1)
 ```
