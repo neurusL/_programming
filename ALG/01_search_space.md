@@ -78,7 +78,7 @@ exercise: L42, L923, L84
 
 ## 2. by a "sliding window"
 ### scenario 1: when looking for consecutive sub-array with some property
-1. search for string matching (Rabin Karp algorithm), or match up to permutation
+1. search for string matching (Rabin Karp algorithm, where each check for window is built incrementally), or match up to permutation
 2. search for shortest sub-string containing a multiset of chars
 3. search for longest sub-string without duplicated chars
 The problems can be solved by sliding window trick share the same property that:
@@ -92,9 +92,8 @@ Going back to the examples:
 3. window should never have duplicated chars in it, if there is, we pop lower side of the window until resume the invariant.
 
 ```python
-    left = 0
-    right = 0 
-    window = {} # can be set, map, counters, array if keys are fixed, or 
+    left, right = 0, 0 # window boundary [left, right)
+    window = {} # can be int, set, map, counters, array if keys are fixed, or 
     # other combined data structure
     # for instance in 3, you may maintain a hashmap together with a counter
     # of the number of char whose appearance is covered in the sliding window
@@ -103,7 +102,7 @@ Going back to the examples:
         window.add(iterable[right])
         right += 1
 
-        while is_invariant(window): 
+        while is_invariant(window): # sometimes worth additional check of left < right
             # customized operation, e.g. update answer
             # ...
             # it can be trick to wisely update information here (*)
@@ -135,8 +134,7 @@ here's an example how to break the final answer into partitions with bijection t
         char_cnt = 0   # +1 if c in word2 and window[c] >= target[c]
         window = [0] * 26
 
-        left = 0
-        right = 0
+        left, right = 0, 0
 
         res = 0 # total number count of desired substring
 
@@ -160,4 +158,88 @@ here's an example how to break the final answer into partitions with bijection t
                 left += 1
 
         return res
+```
+let's conclude with an extended discussion: when do not use sliding window? Namely, when you cannot narrow down the search space to a collection of windows that share an invariant, such that the growth of upper boundary doesn't "drag" the lower boundary to move forward. In this scenario, try to think about other optimization techniques, like reusing calculated results (e.g. dynamic programming).
+
+## 3. by reducing half of search space
+### scenario 1: when the data structure is highly ordered, e.g. a sorted array, or a circular sorted array
+The idea of Binary Search is straight forward: whenever you probe an element $$e$$ in a space which is highly ordered w.r.t property $$P$$, based on $$P(e)$$, we ignore all elements $$e'$$ s.t. $$e' < e$$ or $$e' > e$$.
+The hairy details on boundaries require careful reasoning, see comments in between lines.
+
+Here're some templates of binary search on 1d array:
+1. search for element in array
+```python
+    def binary_search(self, nums: List[int], target: int) -> int:
+        # requires(is_sorted(nums))
+        # we search on range [lo, hi)
+        lo = 0
+        hi = len(nums)
+
+        while lo < hi: # while search range is not empty
+            mid = (hi - lo) // 2 + lo # avoid overflow
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] > target:
+                hi = mid # new `open` upper bd
+            else:
+                lo = mid + 1 
+                # mid is excluded from search space, so lower bd = mid + 1
+                # if lo = mid, then range not necessarily shink
+                # cause infinite loop
+
+        return -1
+```
+2. search for $$e$$'s lower bound (first element $$>= e$$) and upper bound (first element $$>e$$)
+You may notice in the implementation of binary search above, ```lo``` stands for highest point that $$e = target$$ might be true, and ```hi``` for lowest point we know $$e > target$$. A small adjustment lead to implementation of ```lower_bound``` and ```upper_bound```
+```python
+    def lower_bound_include(self, nums: List[int], target: int) -> int:
+        lo, hi = 0, len(nums)
+
+        # hi: lowest point >= target (the result)
+        # lo: given highest point < target, +1 to obtain new lower bound
+        while lo < hi: 
+            mid = (hi - lo) // 2 + lo
+            if nums[mid] >= target:
+                hi = mid
+            else:
+                lo = mid + 1
+        return hi
+```
+```python
+    def upper_bound_exclude(self, nums: List[int], target: int) -> int:
+        lo, hi = 0, len(nums)
+
+        # hi: lowest point > target (the result)
+        # lo: given highest point <= target, +1 to obtain new lower bound
+        while lo < hi: 
+            mid = (hi - lo) // 2 + lo
+            if nums[mid] > target:
+                hi = mid
+            else:
+                lo = mid + 1
+        return hi
+```
+```python
+    def upper_bound_include(self, nums: List[int], target: int) -> int:
+        upper_bound_exclude(nums,target) - 1
+```
+3. a unified template (thanks to @IvanLenn, and according to this post https://codeforces.com/blog/entry/9901)
+- Usually the space of binary search is canonical (i.e. integers)
+- We can find a property (function) $P$ and some integer $N$ such that $\forall n >= N$ this $$P(n)$$ is true and $\forall n < N$ this $$P(n)$$ is false. Based on the property, we ignore at least half of search space each time, which is crucial to binary search.
+
+Therefore, in implementation we maintain two invariants:
+- $l$​ is the **highest point** we know $$P$$ is true. (if such $l$​ doesn't exist define it to be left boundary - 1)
+- $r$ is the **lowest point** we know $$P$$ is false. (if such $r$ doesn't exist define it to be right boundary + 1)
+
+Then just copy this template and customize this property function:
+```cpp
+int l = lb - 1, r = rb + 1;
+while (l + 1 < r) {
+  int mid = l + (r - l) / 2;
+  function<bool(int)> ok = [&](int mid) -> bool {
+    // Implement me
+  }
+  if (ok(mid)) l = mid;
+  else r = mid;
+}
 ```
