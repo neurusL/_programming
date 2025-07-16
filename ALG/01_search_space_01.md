@@ -1,4 +1,4 @@
-# Chapter01: Search Space
+# Chapter 01: Search Space
 - two pointer 
 - sliding window
 - binary search
@@ -6,6 +6,7 @@
 ## When search space can be pruned...
 
 ## 1. by two pointers
+First, what is two pointer technique? Basically, each time we narrow down to two elements in search/memory space:
 ### scenario 1: remove elements satisfying property $$P$$ from array in place:
 ```python
 def p(x: int) -> bool: # this can be generalized to any p
@@ -58,6 +59,7 @@ def moveZeroes(self, nums: List[int]) -> None:
             if sum >= target:
                 right -= 1
             else:
+                # * a general technique of count result in different ways
                 # all (left, right) are valid pairs whose sum < target
                 res += (right - left)
                 # consider next left
@@ -119,6 +121,7 @@ here's an example how to break the final answer into partitions with bijection t
         # first step if find all matching of word2 in word1 up to permutation
         # the step is same as L76
         # second step is accumulate the counts based on each sliding window
+        # * a general techique of counting result in another way
 
          
         target_char_cnt = 0

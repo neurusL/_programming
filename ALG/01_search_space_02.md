@@ -1,4 +1,4 @@
-# Chapter01: Search Space
+# Chapter 01: Search Space
 - two pointer 
 - sliding window
 - binary search
@@ -11,7 +11,7 @@ The idea of Binary Search is straight forward: whenever you probe an element $$e
 The hairy details on boundaries require careful reasoning, see comments in between lines.
 
 Here're some templates of binary search on 1d array:
-1. search for element in array
+1. search for an element in array
 ```python
     def binary_search(self, nums: List[int], target: int) -> int:
         # requires(is_sorted(nums))
@@ -90,6 +90,10 @@ while (l + 1 < r) {
 example of uses (unified and clean!):
 ```python
     def lower_bd(nums: List[int], target: int) -> int:
+        """
+        lowest point >= target is true
+        postcondition: bisect_left(nums, target, in [ 0, len(nums) ))
+        """
         lo = -1 # highest point < target
         hi = len(nums) # lowest point >= target
 
@@ -102,7 +106,10 @@ example of uses (unified and clean!):
         
         return hi
     
-    def upper_bd(nums: List[int], target: int) -> int:
+    def upper_bd_inclusive(nums: List[int], target: int) -> int:
+        """
+        highest point <= target is true
+        """
         lo = -1 # highest point <= target
         hi = len(nums) # lowest point > target
 
@@ -115,7 +122,11 @@ example of uses (unified and clean!):
         
         return lo
     
-    def upper_bd_exclude(nums: List[int], target: int) -> int:
+    def upper_bd(nums: List[int], target: int) -> int:
+        """
+        lowest point > target is true
+        postcondition: bisect_right(nums, target, in [ 0, len(nums) ))
+        """
         lo = -1 # highest point <= target
         hi = len(nums) # lowest point > target
 
@@ -127,12 +138,9 @@ example of uses (unified and clean!):
                 hi = mid
         
         return hi
-
-    lower = lower_bd(nums, target)
-    upper = upper_bd(nums, target)
-    upper_exclude = upper_bd_exclude(nums, target)
-    assert(0 <= upper_exclude - upper <= 1)
 ```
+exercise: L33, L4
 
 ### scenario 2: highly ordered search space can be implicit
-For example, when the solution can only be integers with a bounded range, and we can eliminate at least half of answers each search, we can apply binary search with your customized ```ok``` there.
+For example, when the solution can only be integers with a bounded range, and we can eliminate at least half of answers each search, we can apply binary search with your customized ```ok``` there. When you have a feeling that answer can be tried oscillating around and converge to a final answer, then binary search is a good trial.
+exercise: L875
