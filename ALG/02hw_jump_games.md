@@ -77,9 +77,9 @@ exercise: slightly modify this to solve [Jump Game II](https://leetcode.com/prob
         answer, n = 0, len(nums)
         cur_end, cur_far = 0, 0
 
-        for i in range(n - 1):
+        for (i, jump) in enumerate(nums):
             # Update the farthest reachable index of this jump.
-            cur_far = max(cur_far, i + nums[i])
+            cur_far = max(cur_far, i + jump)
 
             # If we finish the starting range of this jump,
             # Move on to the starting range of the next jump.
