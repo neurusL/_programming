@@ -26,6 +26,30 @@ Given an array of intervals where intervals[i] = [start_i, end_i], merge all ove
         return res
 ```
 
+remove minimum number of intervals to make the rest non-overlap
+```python
+    def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
+        """
+        greedy:
+        - sort by x
+        - whenever two adjacent intervals have overlap, choice the one with smaller y
+        """
+
+        intervals.sort(key=lambda x: x[0])
+
+        res = []
+        cnt = 0
+        for [x, y] in intervals:
+            if len(res) == 0 or res[-1][1] <= x:
+                res.append([x, y])
+            else:
+                if res[-1][1] > y:
+                    res[-1] = [x, y]
+                cnt += 1
+
+        return cnt
+```
+
 insert new interval in to sorted non-overlapped intervals:
 
 ```python
@@ -63,7 +87,7 @@ insert new interval in to sorted non-overlapped intervals:
 
 ```
 
-remove interval from sorted non-overlapped intervals:
+remove one interval from sorted non-overlapped intervals:
 ```python
     def removeInterval(self, intervals: List[List[int]], toBeRemoved: List[int]) -> List[List[int]]:
         
