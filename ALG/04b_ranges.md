@@ -128,7 +128,7 @@ We can build interference graph from intervals, and such graph are "interval gra
                    |-------|
                         |-------|
 ```
-For example, above intervals induce an interference graph P5, which is 2-colorable.
+For example, above intervals induce an interference graph $$P_5$$, which is 2-colorable.
 
 Calculating chromatic number of interval graphs (in general chordal graph, and more generally
 perfect graph) has polynomial algorithms. Calculating chromatic number of arbitrary 
@@ -142,7 +142,7 @@ of calculating chromatic number. An interesting non-example is, register allocat
                    |-- w --|
                         |-- u --|
 ```
-will build the graph C5 (3-colorable), which is neither a chordal nor a perfect graph. 
+will build the graph $$C_5$$ (3-colorable), which is neither a chordal nor a perfect graph. 
 Such a graph cannot be build from simple intervals, e.g. in the meeting room problem,
 since no two intervals there belongs to the same vertex in the graph.
 A natural(but not trivial) solution is transfering program into a equivalent form
@@ -156,6 +156,6 @@ x', to ensure single assignment, concluding with intervals:
                    |-- w --|
                         |-- u --|
 ```
-with corresponding graph P6(2-colorable), which is chordal and perfect graph.
+with corresponding graph $$P_6$$ (2-colorable), which is chordal and perfect graph.
 It turns out SSAized program's interference graph are always chordal, in such case,
 register allocation has efficient algorithm to solve.
