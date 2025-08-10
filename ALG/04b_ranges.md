@@ -121,11 +121,13 @@ remove one interval from sorted non-overlapped intervals:
 ### Scheduling tasks related problems
 
 We can build interference graph from intervals, and such graph are "interval graph".
+```ascii
 |-------|                    |-------|
       |-------|
              |-------|
                    |-------|
                         |-------|
+```
 For example, above intervals induce an interference graph P5, which is 2-colorable.
 
 Calculating chromatic number of interval graphs (in general chordal graph, and more generally
@@ -133,11 +135,13 @@ perfect graph) has polynomial algorithms. Calculating chromatic number of arbitr
 graph is NP-hard.
 The ability to express interference by lineariable intervals guarantees a efficient algorithm
 of calculating chromatic number. An interesting non-example is, register allocation:
+```ascii
 |-- x --|                    |-- x --|
       |-- y --|
              |-- z --|
                    |-- w --|
                         |-- u --|
+```
 will build the graph C5 (3-colorable), which is neither a chordal nor a perfect graph. 
 Such a graph cannot be build from simple intervals, e.g. in the meeting room problem,
 since no two intervals there belongs to the same vertex in the graph.
@@ -145,11 +149,13 @@ A natural(but not trivial) solution is transfering program into a equivalent for
 where we avoid splitting of variable's liveness---the form is call Static Single
 Assignment(SSA) form. As the name suggested, we rename second ocurrence of x to
 x', to ensure single assignment, concluding with intervals:
+```ascii
 |-- x --|                    |-- x' --|
       |-- y --|
              |-- z --|
                    |-- w --|
                         |-- u --|
+```
 with corresponding graph P6(2-colorable), which is chordal and perfect graph.
 It turns out SSAized program's interference graph are always chordal, in such case,
 register allocation has efficient algorithm to solve.
