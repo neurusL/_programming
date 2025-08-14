@@ -4,7 +4,7 @@ Data Structure - record data wisely and economically
 When requires Last In First Out pattern.
 exercise: L946, L735, L301
 ## Queue
-
+exercise: L933, L281(with n different inputs)
 
 ## Monotone data structures
 ### monotone stack
@@ -34,10 +34,10 @@ void pop() {}         // O(1)
 int top() {}          // O(1)
 int getMin/Max() {}   // O(1) amortized
 ```
-Hint: similar monotone stack in next greater element, when encounter a new element $$e$$,
-we remove all element smaller than $$e$$ from monotone queue, since they can no
-longer be max of the queue until we pop $$e$$. (Same idea as: when encounter a new
-element $$e$$ in reversed order, all elements $$e' < e$$ cannot be next greater
+Hint: similar monotone stack in next greater element, when encounter a new element $e$,
+we remove all element smaller than $e$ from monotone queue, since they can no
+longer be max of the queue until we pop $e$. (Same idea as: when encounter a new
+element $e$ in reversed order, all elements $e' < e$ cannot be next greater
 value for all unvisited elements).
 ```
  queue              max queue
@@ -99,9 +99,9 @@ int top() {}          // O(1)
 int getMin/Max() {}   // O(1)
 ```
 Hint: implemented by two stacks, one maintaining the actual stack, another stack maintaining current min/max value of all sub-stack above. The 
-For each new value $$e$$, we push into the S' iff $$e$$ change
-the monotonic value (e.g. max, min). When we pop $$e'$$ from original stack, if 
-$$e'$$ does not reside on top of S', then monotonic value is not 
+For each new value $e$, we push into the S' iff $e$ change
+the monotonic value (e.g. max, min). When we pop $e'$$ from original stack, if 
+$e'$ does not reside on top of S', then monotonic value is not 
 effected; otherwise we also pop S' to obtain next monotonic value.
 ```
 stack S           max stack S'

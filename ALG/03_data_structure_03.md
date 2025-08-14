@@ -2,9 +2,21 @@ Data Structure - record data wisely and economically
 
 ## Heap and Priority Queue
 When efficient (O(log n)) insertion and **only** delete min/max needed. (If there's
-a need for arbitrary deletion, use OrderedMap)
-### scenario 1: kth largest
- 
+a need for arbitrary deletion, use OrderedMap).  
+Notice most language has a default **min** heap.
+### scenario 1: kth largest element
+```python
+def findKthLargest(self, nums: List[int], k: int) -> int:
+    largestk = []
+    heapify(largestk)
+
+    for nun in nums:
+        heappush(largestk, num)
+        if len(largestk) > k:
+            heappop(largestk)
+    
+    return largestk[0] # smallest in largest k elements
+```
 ### scenario 2: time scheduling
 Usually, you are provided with a list of tasks [start_time, end_time], and some capacity constraining on number of intervals you can process. 
 The general idea is simply modeling the processor ordered by starting time, where

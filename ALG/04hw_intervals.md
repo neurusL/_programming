@@ -1,7 +1,8 @@
 A Case Study on Intervals
 
 ### Operations on non-overlapping intervals
-Given an array of intervals where intervals[i] = [start_i, end_i], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
+Given an array of intervals where intervals[i] = [start_i, end_i], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.  
+a.k.a Union all intervals
 ```python
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
         """
@@ -13,19 +14,44 @@ Given an array of intervals where intervals[i] = [start_i, end_i], merge all ove
         """
         intervals.sort(key= lambda x: x[0])
 
-        res = []
+        unions = []
         for [x, y] in intervals:
             # after sorting by x, the only case two adjacent intervals overlap
             # (x1, y1), (x2, y2) where x2 < y1
-            if len(res) == 0 or res[-1][1] < x:
-                res.append([x, y])
+            if len(unions) == 0 or unions[-1][1] < x:
+                unions.append([x, y])
             else:
-                res[-1][1] = max(res[-1][1], y)
+                unions[-1][1] = max(unions[-1][1], y)
         
-        return res
+        return unions
 ```
 
-remove minimum number of intervals to make the rest non-overlap
+Intersect all intervals
+```python
+    def findMinArrowShots(self, points: List[List[int]]) -> int:
+        points.sort(key=lambda x: x[0])
+        intersects = [] # reduce intervals to minimal intervals touching all points
+
+        for point in points:
+            if len(intersects) == 0 or \
+                intersects[-1][1] < point[0]:
+                # no overlap with last interval calculated
+                intersects.append(point)
+            else:
+                # calculate a minimal interval touching both 
+                # notice unlike merging intervals (union)
+                # we are intersecting intervals, where only intersects[-1] is relevant
+                [oldx, oldy] = intersects[-1]
+                [newx, newy] = point
+                intersects[-1] = [max(oldx, newx), min(oldy, newy)]
+
+                # print(intersects[-1])
+                assert intersects[-1][0] <= intersects[-1][1]
+                
+        return intersects
+```
+
+remove minimum number of intervals to make the unionst non-overlap
 ```python
     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
         """
@@ -36,14 +62,14 @@ remove minimum number of intervals to make the rest non-overlap
 
         intervals.sort(key=lambda x: x[0])
 
-        res = []
+        unions = []
         cnt = 0
         for [x, y] in intervals:
-            if len(res) == 0 or res[-1][1] <= x:
-                res.append([x, y])
+            if len(unions) == 0 or unions[-1][1] <= x:
+                unions.append([x, y])
             else:
-                if res[-1][1] > y:
-                    res[-1] = [x, y]
+                if unions[-1][1] > y:
+                    unions[-1] = [x, y]
                 cnt += 1
 
         return cnt
@@ -62,11 +88,11 @@ insert new interval in to sorted non-overlapped intervals:
         instead of handling three cases in one while loop,
         it's easier to handle in separated loop (states)
         """
-        res = []       
+        unions = []       
         i = 0
         # when newInterval's left greater than current interval'right
         while i < n and intervals[i][1] < newInterval[0]:
-            res.append(intervals[i])
+            unions.append(intervals[i])
             i += 1
         
         # when newInterval overlap with current interval
@@ -75,14 +101,14 @@ insert new interval in to sorted non-overlapped intervals:
             newInterval[0] = min(intervals[i][0], newInterval[0])
             newInterval[1] = max(intervals[i][1], newInterval[1])
             i += 1
-        res.append(newInterval)
+        unions.append(newInterval)
 
         # when newInterval's right less than current interval's left
         while i < n:
-            res.append(intervals[i])
+            unions.append(intervals[i])
             i += 1
 
-        return res
+        return unions
 
 ```
 
@@ -91,30 +117,30 @@ remove one interval from sorted non-overlapped intervals:
     def removeInterval(self, intervals: List[List[int]], toBeRemoved: List[int]) -> List[List[int]]:
         
         n = len(intervals)
-        res = []
+        unions = []
 
         i = 0
         while i < n and intervals[i][1] < toBeRemoved[0]:
-            res.append(intervals[i])
+            unions.append(intervals[i])
             i += 1
 
         while i < n and intervals[i][0] <= toBeRemoved[1]:
             [x, y] = intervals[i]
             if x < toBeRemoved[0] and y > toBeRemoved[1]:
-                res.append([x, toBeRemoved[0]])
-                res.append([toBeRemoved[1], y])
+                unions.append([x, toBeRemoved[0]])
+                unions.append([toBeRemoved[1], y])
             elif x < toBeRemoved[0] and y <= toBeRemoved[1]:
-                res.append([x, toBeRemoved[0]])
+                unions.append([x, toBeRemoved[0]])
             elif x >= toBeRemoved[0] and y > toBeRemoved[1]:
-                res.append([toBeRemoved[1], y])
+                unions.append([toBeRemoved[1], y])
 
             i += 1
 
         while i < n:
-            res.append(intervals[i])
+            unions.append(intervals[i])
             i += 1
 
-        return res
+        return unions
 ```
 
 ### Scheduling tasks related problems
@@ -132,8 +158,8 @@ For example, above intervals induce an interference graph $$P_5$$, which is 2-co
 Calculating chromatic number of interval graphs (in general chordal graph, and more generally
 perfect graph) has polynomial algorithms. Calculating chromatic number of arbitrary 
 graph is NP-hard.
-The ability to express interference by lineariable intervals guarantees a efficient algorithm
-of calculating chromatic number. An interesting non-example is, register allocation:
+The ability to expunionss interference by lineariable intervals guarantees a efficient algorithm
+of calculating chromatic number. An inteunionsting non-example is, register allocation:
 ```ascii
 |-- x --|                    |-- x --|
       |-- y --|
@@ -155,6 +181,6 @@ x', to ensure single assignment, concluding with intervals:
                    |-- w --|
                         |-- u --|
 ```
-with corresponding graph $$P_6$$ (2-colorable), which is chordal and perfect graph.
+with corunionsponding graph $$P_6$$ (2-colorable), which is chordal and perfect graph.
 It turns out SSAized program's interference graph are always chordal, in such case,
 register allocation has efficient algorithm to solve.
