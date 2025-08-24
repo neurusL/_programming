@@ -1,8 +1,10 @@
 A Case Study on Intervals
 
 ### Operations on non-overlapping intervals
-Given an array of intervals where intervals[i] = [start_i, end_i], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.  
-a.k.a Union all intervals
+For operations on interval, we need handle carefully for [x1, y1], [x2, y2] 
+when ```not x2 > y1 and not y2 < x1```. In most cases, we first sort by x to only
+consider the case ```x2 <= y1```
+Union all intervals (L56)
 ```python
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
         """
@@ -26,7 +28,7 @@ a.k.a Union all intervals
         return unions
 ```
 
-Intersect all intervals
+Intersect all intervals (L452)
 ```python
     def findMinArrowShots(self, points: List[List[int]]) -> int:
         points.sort(key=lambda x: x[0])
@@ -49,9 +51,10 @@ Intersect all intervals
                 assert intersects[-1][0] <= intersects[-1][1]
                 
         return intersects
+    """There's an alternative greedy solution of this problem"""
 ```
 
-remove minimum number of intervals to make the unionst non-overlap
+remove minimum number of intervals to make the rest non-overlap
 ```python
     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
         """
@@ -62,21 +65,20 @@ remove minimum number of intervals to make the unionst non-overlap
 
         intervals.sort(key=lambda x: x[0])
 
-        unions = []
+        res = []
         cnt = 0
         for [x, y] in intervals:
-            if len(unions) == 0 or unions[-1][1] <= x:
-                unions.append([x, y])
+            if len(res) == 0 or res[-1][1] <= x:
+                res.append([x, y])
             else:
-                if unions[-1][1] > y:
-                    unions[-1] = [x, y]
+                if res[-1][1] > y:
+                    res[-1] = [x, y]
                 cnt += 1
 
         return cnt
 ```
 
-insert new interval in to sorted non-overlapped intervals:
-
+insert new interval in to sorted non-overlapped intervals (L57)
 ```python
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
         n = len(intervals)

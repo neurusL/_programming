@@ -1,22 +1,10 @@
 Data Structure - record data wisely and economically
+## Tree iteration
 
-## Hashing based and improved data structure
-HashMap provides average O(1) time read and write to key's value. But sometimes
-we would like to keep more information:
-### LinkedHashMap (OrderedDict/unordered_map/...)
-- keep insertion order of (key, value) pairs (notice, usually iterating through a
-hashmap(or hashset) is undeterministic)
-```cpp
-void put(Key k, Value v) {} // O(1)
-Value get(Key k) {}         // O(1)
-void delete(Key k) {}       // O(1)
-Iterator<Pair<Key,Value>> iterate() {}   
-```
-Hint: a hashmap with double linked list
+exercises:  
+[L114](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/description/?envType=study-plan-v2&envId=top-interview-150)  
+[L173](https://leetcode.com/problems/binary-search-tree-iterator/?envType=study-plan-v2&envId=top-interview-150)
 
-### RandomizedSet
-
-L380
 
 ## Tree (balanced) based data structure
 ### Tree Map (SortedDict/map/...)

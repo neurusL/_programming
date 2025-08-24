@@ -30,8 +30,10 @@ The algorithm essentially brings the idea of Hoffman coding.
 
 exercises:  
 L45,  
+L134,
 L135,  
 L435 (non-overlapping intervals, where we greedily remove interval with larger right boundary),  
+L452 (since all balloons have to be burst, it's fine to search for balloons can be burst together with the first),  
 L670,  
 
 note: greedy algorithms are usually come with a data structure that supports retreiving the greedy choice efficiently (based on some order) -- heap.
