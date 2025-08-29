@@ -1,0 +1,117 @@
+## Linked List
+
+### use ```dummy``` node to represent empty linked list
+- we need to case on the position of node when remove if not using dummy node
+```python
+    def removeNthFromStart(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        prev = None
+        curr = head
+
+        while curr and n-1 > 0:
+            prev = curr
+            curr = curr.next
+            n -= 1
+        
+        if not prev:
+            print("remove first node")
+            head = curr.next
+        elif not curr:
+            print("no node is removed")
+        else:
+            prev.next = curr.next
+        return head
+```
+- if dummy node before head is used
+```python
+    def removeNthFromStart(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        dummy = ListNode(-1)
+        dummy.next = head
+
+        prev = dummy
+        curr = head
+
+        while curr and n-1 > 0:
+            prev = curr
+            curr = curr.next
+            n -= 1
+        
+        prev.next = curr.next
+        return dummy.next # <- change here
+```
+Similarly, in addition to dummy head, we add dummy tail to doubly linked list, further avoiding cases when remove a list node.  
+
+It's also helpful to use dummy node in concatenating lists, which saves us a case analysis on empty list
+```python
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        dummy1 = ListNode(-1)
+        dummy2 = ListNode(-1)
+
+        p1, p2 = dummy1, dummy2 # pointers to list1 and list2
+        p = head                # pointer to original list
+
+        while p is not None:
+            if p.val < x:
+                p1.next = p
+                p1 = p1.next
+            else:
+                p2.next = p
+                p2 = p2.next
+            p = p.next
+
+        p1.next = dummy2.next
+        p2.next = None
+
+        return dummy1.next
+```
+
+### use two pointers coordinate with each other
+usually a fast and a slow pointer
+```python
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        """
+        two pointers move at different pace
+        """
+        p1 = head
+        p1_cnt = 1
+
+        dummy = ListNode(-1)
+        dummy.next = head
+        p2_prev = dummy
+        p2 = head
+
+        while p1_cnt <= n and p1:
+            p1_cnt += 1
+            p1 = p1.next
+        
+        while p1:
+            p1 = p1.next
+
+            p2_prev = p2
+            p2 = p2.next
+        
+        p2_prev.next = p2.next
+
+        return dummy.next
+```
+remove mid of a linked list
+```python
+    def deleteMiddle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        p1 = head
+
+        dummy = ListNode(-1)
+        dummy.next = head
+        p2_prev = dummy
+        p2 = head
+
+        while p1 and p1.next: # <- notice the guard here
+            p1 = p1.next.next
+            p2_prev = p2
+            p2 = p2.next
+        
+        p2_prev.next = p2.next
+        return dummy.next
+```
+detect cycle in linked list
+- observation: Set slow and fast pointer moving at different speed (1 and 2). If fast doesn't reach end, but at some point same as the slow pointer, then cycle detected.
+```python
+```

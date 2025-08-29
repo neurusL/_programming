@@ -4,7 +4,21 @@ Data Structure - record data wisely and economically
 When efficient (O(log n)) insertion and **only** delete min/max needed. (If there's
 a need for arbitrary deletion, use OrderedMap).  
 Notice most language has a default **min** heap.
-### scenario 1: kth largest element
+
+### Basic usage
+```python
+heap1 = []
+heapify(heap1)
+elem1 = 1
+heappush(heap2, 0-elem) # can transfer into max heap via negation
+value = 0-heappop(heap2) # transfer back to original element
+
+heap2 = []
+heapify(heap2)
+heappush(heap2, (1, "hallo")) # can customize priority by tuple
+priority, value = heappop(heap2)
+```
+### scenario 1.1: kth largest element
 ```python
 def findKthLargest(self, nums: List[int], k: int) -> int:
     largestk = []
@@ -17,7 +31,53 @@ def findKthLargest(self, nums: List[int], k: int) -> int:
     
     return largestk[0] # smallest in largest k elements
 ```
-### scenario 2: time scheduling
+### scenario 1.2: find median from data stream
+```python
+class MedianFinder:
+    """
+    maintain two partitions of accumulated data
+    pq1: get and pop max when len(pq1) > (size + 1) // 2
+    pq2: get and pop min when len(pq2) > size // 2
+    invariant: 0 <= len(pq1) - len(pq2) <= 1
+    """
+    def __init__(self):
+        self.max_heap = []
+        self.min_heap = []
+        heapify(self.max_heap)
+        heapify(self.min_heap)
+        
+
+    def addNum(self, num: int) -> None:
+        if len(self.max_heap) == 0:
+            heappush(self.max_heap, -num)
+            return None
+        
+        max_heap_top = -(self.max_heap[0])
+        if num <= max_heap_top:
+            heappush(self.max_heap, -num)
+        else:
+            heappush(self.min_heap, num)
+        
+        # rebalance between two heaps
+        if len(self.max_heap) - len(self.min_heap) >= 2:
+            heappush(self.min_heap, -heappop(self.max_heap))
+        elif len(self.min_heap) - len(self.max_heap) >= 1:
+            heappush(self.max_heap, -heappop(self.min_heap))
+            
+        
+
+    def findMedian(self) -> float:
+        assert 0 <= len(self.max_heap) - len(self.min_heap) <= 1
+
+        if len(self.max_heap) - len(self.min_heap) == 1:
+            return -self.max_heap[0]
+        else:
+            x = -self.max_heap[0]
+            y = self.min_heap[0]
+            return (x + y) / 2
+```
+
+### scenario 2.1: [greedy related] time scheduling
 Usually, you are provided with a list of tasks [start_time, end_time], and some capacity constraining on number of intervals you can process. 
 The general idea is simply modeling the processor ordered by starting time, where
 you need a data structure maintaining tasks being processed. Upon new task coming in,

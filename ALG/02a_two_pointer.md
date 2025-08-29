@@ -7,7 +7,7 @@
 
 ## 1. by two pointers
 First, what is two pointer technique? Basically, each time we narrow down to two elements in search/memory space:
-### scenario 1: remove elements satisfying property $$P$$ from array in place:
+### scenario 1: remove elements satisfying property $P$ from array in place:
 ```python
 def p(x: int) -> bool: # this can be generalized to any p
     return x == 0
@@ -40,8 +40,37 @@ def moveZeroes(self, nums: List[int]) -> None:
         # todo!("I hope there's a more generalizable and formal template for this")
 
 ```
-### scenario 2: when search space can be pruned to a sequence of range keep strictly decreasing
+### scenario 2.1: when input is sorted
+- merge in merge sort
+
+### scenario 2.2: when search space can be pruned to a sequence of range keep strictly decreasing
 ```python
+    def twoSumLists(self, nums: List[int], start: int, end: int, target: int) -> List[List[int]]:
+        res = []
+
+        lo = start
+        hi = end
+
+        while lo < hi:
+            x = nums[lo]
+            y = nums[hi]
+            if x + y == target:
+                res.append([x, y])
+                # ignore all same x's, since they won't contribute to new answer
+                lo += 1
+                while lo <= hi and nums[lo] == nums[lo-1]:
+                    lo += 1
+                # ignore all same y's ...
+                hi -= 1
+                while lo <= hi and nums[hi] == nums[hi+1]:
+                    hi -= 1
+            elif x + y < target:
+                lo += 1
+            else:
+                hi -= 1
+
+        return res
+
     def twoSumSmaller(self, nums: List[int], start: int, target: int) -> int:
         # assert the list is sorted
         # there's no need to sort the list each time we call twoSumSmaller

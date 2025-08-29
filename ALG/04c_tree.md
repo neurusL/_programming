@@ -2,6 +2,7 @@ Data Structure - record data wisely and economically
 ## Tree iteration
 
 exercises:  
+L106  
 [L114](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/description/?envType=study-plan-v2&envId=top-interview-150)  
 [L173](https://leetcode.com/problems/binary-search-tree-iterator/?envType=study-plan-v2&envId=top-interview-150)
 
