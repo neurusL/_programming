@@ -1,3 +1,11 @@
+The following array access, at first glance, should complain 
+index out of bound. However, python interprets it as last row
+in ```dp``` and j th element in that row. Keep this in mind when debugging.
+```python
+    dp[-1][j]
+```
+#
+
 I spend a while debugging the following python code for coin change, the idea is
 simply---we calculate min count of coin to make up the amount via memoization. Let's
 see where goes wrong:

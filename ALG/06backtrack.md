@@ -1,12 +1,12 @@
 
-## Introduction to Dynamic Programming 
-### from backtracking to memoization
+## Backtracking 
+### combination sum
 Let's first consider the classic combination sum problem, where given a list of candidates and a target, output combinations of candidates such that they sum up to be target number.  
 Here's a typical backtracking solution (bruteforce)
 - version [each element can be used unlimited times]
 ```python
-def combinationSumLinear(candidates: List[int], target: int) -> List[List[int]]:
-    # candidates are distince
+def combinationSum(candidates: List[int], target: int) -> List[List[int]]:
+    # candidates are distinct
     combinations = []
     def backtrack(acc: List[int], start: int, target: int):
         if target < 0:

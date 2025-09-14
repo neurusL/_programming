@@ -5,7 +5,83 @@ As we mentioned in discussing merge sort, given sorted array-ish data $l1$ and $
 - maintaining two pointers $p_1$ and $p_2$ pointing to next candidate to pick
 - essentially, we narrow down the search space of next element to $O(1)$, by two pointers (see chapter 2)
 
-### merge two sorted linked list
+### merge two sorted non-overlapping intervals
+def intersectSortedIntervals(l1: List[List[int]], l2: List[List[int]]) -> List[int]:
+    """
+    requires: l1, l2 be sorted, non-overlapping intervals
+    """
+    if len(l1) == 0 or len(l2) == 0:
+        return [] 
+    
+    p1, p2 = 0, 0
+    res = []
+
+    while p1 < len(l1) and p2 < len(l2):
+        [x1, y1] = l1[p1]
+        [x2, y2] = l2[p2]
+
+        # consider next interval to append to res
+        if y1 >= x2 and y2 >= x1:
+            res.append([max(x1, x2), min(y1, y2)])
+
+        # maintaint the two pointers (similar to merge in merge sort)
+        if y1 < y2: 
+            # then [x1, y1] can only be affected by [x2, y2], since next 
+            # interval in l2 cannot overlap with [x1, y1]
+            # we can safely move p1 by 1 since we already consider the effect of [x1, y1]
+            p1 += 1
+        else:
+            p2 += 1
+    
+    return res
+
+def unionSortedIntervals(l1: List[List[int]], l2: List[List[int]]) -> List[List[int]]:
+    """
+    requires: l1, l2 be sorted, non-overlapping intervals
+    """
+    if len(l1) == 0 or len(l2) == 0:
+        return l1 + l2
+    
+    p1, p2 = 0, 0
+    res = []
+    l1, l2 = l1[:], l2[:] # we will mutate l1, l2 if not making deep copy
+
+    while p1 < len(l1) and p2 < len(l2):
+        [x1, y1] = l1[p1]
+        [x2, y2] = l2[p2]
+
+        # consider next interval to append to res
+        if y1 < x2:
+            res.append([x1, y1])
+        elif y2 < x1:
+            res.append([x2, y2])
+        else:
+            # in place merge happen
+            merged_interval = [min(x1, x2), max(y1, y2)]
+            l1[p1] = merged_interval
+            l2[p2] = merged_interval
+            
+
+        # maintaint the two pointers
+        if y1 < y2: 
+            # then [x1, y1] can only be affected by [x2, y2], since next 
+            # interval in l2 cannot overlap with [x1, y1]
+            # we can safely move p1 by 1 since we already consider the effect of [x1, y1]
+            p1 += 1
+        else:
+            p2 += 1
+    
+    while p1 < len(l1):
+        res.append(l1[p1])
+        p1 += 1
+    
+    while p2 < len(l2):
+        res.append(l2[p2])
+        p2 += 1
+    
+    return res
+
+### merge two sorted linked lists
 ```python
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
         """iterative approach

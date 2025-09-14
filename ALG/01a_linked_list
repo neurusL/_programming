@@ -63,6 +63,60 @@ It's also helpful to use dummy node in concatenating lists, which saves us a cas
 
         return dummy1.next
 ```
+exercise [debug]:  
+what if we wrote ```p1, p2 = dummy1.next, dummy2.next``` and later in the ```while```
+loop, assign ```p1, p2``` with pointer in original list? Namely, a pattern 
+```python
+    dummy = ListNode(-1)
+    curr = dummy.next
+
+    while (...):
+        #...
+        curr = ListNode(i)
+        curr = curr.next
+
+```
+- we ended up assigning ```curr``` with new allocated ```ListNode``` then ```None```. ```curr``` becomes a busy bucket keep swapped with new ```ListNode```'s
+which are forever lost.
+
+exercises: 
+L2,  
+L92,
+```python
+    def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+        """
+        Suggestion for linked list problems:
+        - Draw pictures!!
+        """
+        m = 1
+  
+        prev = None
+        curr = head
+
+        while m < left:
+            prev = curr
+            curr = curr.next
+            m += 1
+        first_end = prev # end of first part
+        second_start = curr # start of second part
+
+        # process second part (which we reverse)
+        while m <= right:
+            actual_next = curr.next
+            curr.next = prev
+            prev = curr
+            curr = actual_next
+            m += 1
+        
+        second_start.next = curr
+        if first_end is None:
+            head = prev
+        else:
+            first_end.next = prev
+
+        return head
+
+```
 
 ### use two pointers coordinate with each other
 usually a fast and a slow pointer
@@ -115,3 +169,5 @@ detect cycle in linked list
 - observation: Set slow and fast pointer moving at different speed (1 and 2). If fast doesn't reach end, but at some point same as the slow pointer, then cycle detected.
 ```python
 ```
+
+exercise: L160 (but with O(1) space)
